@@ -1,0 +1,1 @@
+export * from "./officeDoc2006";
