@@ -15,7 +15,7 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "--entry",
-                "./debug/nodejs/main-excel.js"
+                "./debug/nodejs/main-word.js"
             ]
         }
     ]

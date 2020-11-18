@@ -169,7 +169,7 @@ function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !
 
 var $errorId = Symbol("OxjsError.errorId");
 /**
- * 扩展的OXML JS处理自定义错误类
+ * class of extension exception
  */
 
 var OxjsError = /*#__PURE__*/function (_Error) {
@@ -187,7 +187,7 @@ var OxjsError = /*#__PURE__*/function (_Error) {
     return _this;
   }
   /**
-   * 错误ID号
+   * id of the exception
    */
 
 
@@ -201,76 +201,77 @@ var OxjsError = /*#__PURE__*/function (_Error) {
   return OxjsError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 /**
- * 生成一个错误对象实例
- * @param {*} _id 错误ID号
- * @param {*} _message 错误描述
+ * generate a new exception instance
+ * @param {*} _id the id
+ * @param {*} _message the description
  */
 
 function Exception(_id, _message) {
   return new OxjsError(_id, _message);
 }
 /**
- * 未实现
+ * exception of no implementation
  */
 
 function NO_IMPLEMENT(_tip) {
   return Exception(1, _tip ? "".concat(_tip, " has not been implemented") : "the action in this condition has not been implemented");
 }
 /**
- * 期待参数的异常
- * @param {*} _tip 异常提示细节信息
+ * exception of expecting a parameter
+ * @param {*} _tip tip of the parameter
  */
 
 function EXPECT_PARAM(_tip) {
   return Exception(2, _tip ? "expect param: ".concat(_tip) : "missing the valid parameters");
 }
 /**
- * XML解析失败的异常
- * @param {*} _tip 异常提示细节信息
+ * exception of fail in parsing xml
+ * @param {*} _tip message of the detail
  */
 
 function XML_PARSE_FAIL(_tip) {
   return Exception(3, _tip ? "fail in parse xml for \"".concat(_tip, "\"") : "fail in parse XML");
 }
 /**
- * 没有足够的ID
+ * exception of no enough id
  */
 
 var NO_ENOUGH_ID = Exception(4, "no enough ID");
 /**
- * 数据来自不同包的错误
- * @param {*} _tip 异常提示细节信息
+ * exception of data is not in the same package
+ * @param {*} _tip message of the detail
  */
 
 function FROM_OTHER_PACKAGE(_tip) {
   return Exception(5, _tip ? "resource(\"".concat(_tip, "\") is from a different package") : "resource is from a different package");
 }
 /**
- * 定位节点失败
+ * exception of fail in locating node
  */
 
 function LOCATE_NODE_FAIL(_tip) {
   return Exception(6, _tip ? "fail to locate the node(".concat(_tip, ") for operation") : "fail to locate the node for operation");
 }
 /**
- * 定位资源失败
+ * exception of fail in locating the resource
  */
 
 function LOCATE_RESOURCE_FAIL(_tip) {
   return Exception(7, _tip ? "fail to locate the resource for operation: ".concat(_tip) : "fail to locate the resource for operation");
 }
 /**
- * 请求资源失败
- * @param {String} _tip 细节提示信息
+ * exception of acquiring the resource
+ * @param {String} _tip message of the detail
  */
 
 function ACQUIRE_RESOURCE_FAIL(_tip) {
   return Exception(8, _tip ? "fail to acquire resource: ".concat(_tip) : "fail to acquire resource");
 }
 /**
- * 断言
- * @param {*} _cond 断言条件
- * @param {*} _error 条件不成立时抛出的异常
+ * assert
+ * @param {*} _cond the expression of a condition to be checked
+ * @param {*} _error the exception will be thrown if the condition is false
+ * @returns {*} the result of the "_cond"
  */
 
 function assert(_cond, _error) {
@@ -306,27 +307,15 @@ var error = /*#__PURE__*/Object.freeze({
   NoImplemented: NoImplemented
 });
 
-/**
- * 用于存储对象关联的父对象的私有成员符号名称
- */
-var $parent = Symbol(".parent");
-/**
- * 用于存储对象关联的节点的私有成员符号名称
- */
-
-var $node = Symbol(".node");
-
 var constants = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  $parent: $parent,
-  $node: $node
+  __proto__: null
 });
 
 /**
- * 为对象定义只读数据
- * @param {*} _obj 对象
- * @param {String|Symbol|Object} _keyOrMap 数据键名
- * @param {*} _value 数据
+ * declare readonly member(s) for an object
+ * @param {*} _obj the object which will be modified
+ * @param {String|Symbol|Object} _keyOrMap an object contains the members, or the name of the member
+ * @param {*} _value the value of the member, this parameter is used only when the 2rd paramter is the name of the member
  */
 function readonly(_obj, _keyOrMap, _value) {
   if (arguments.length > 2) {

@@ -1,7 +1,7 @@
 const $errorId = Symbol("OxjsError.errorId");
 
 /**
- * 扩展的OXML JS处理自定义错误类
+ * class of extension exception
  */
 export class OxjsError extends Error {
     constructor(_id, _msg) {
@@ -10,7 +10,7 @@ export class OxjsError extends Error {
     }
 
     /**
-     * 错误ID号
+     * id of the exception
      */
     get errorId() {
         return this[$errorId];
@@ -18,75 +18,76 @@ export class OxjsError extends Error {
 }
 
 /**
- * 生成一个错误对象实例
- * @param {*} _id 错误ID号
- * @param {*} _message 错误描述
+ * generate a new exception instance
+ * @param {*} _id the id
+ * @param {*} _message the description
  */
 export function Exception(_id, _message) {
     return new OxjsError(_id, _message);
 }
 
 /**
- * 未实现
+ * exception of no implementation
  */
 export function NO_IMPLEMENT(_tip) {
     return Exception(1, _tip ? `${_tip} has not been implemented` : "the action in this condition has not been implemented");
 }
 /**
- * 期待参数的异常
- * @param {*} _tip 异常提示细节信息
+ * exception of expecting a parameter
+ * @param {*} _tip tip of the parameter
  */
 export function EXPECT_PARAM(_tip) {
     return Exception(2, _tip ? `expect param: ${_tip}` : "missing the valid parameters");
 }
 
 /**
- * XML解析失败的异常
- * @param {*} _tip 异常提示细节信息
+ * exception of fail in parsing xml
+ * @param {*} _tip message of the detail
  */
 export function XML_PARSE_FAIL(_tip) {
     return Exception(3, _tip ? `fail in parse xml for "${_tip}"` : "fail in parse XML");
 }
 
 /**
- * 没有足够的ID
+ * exception of no enough id
  */
 export const NO_ENOUGH_ID = Exception(4, "no enough ID");
 
 /**
- * 数据来自不同包的错误
- * @param {*} _tip 异常提示细节信息
+ * exception of data is not in the same package
+ * @param {*} _tip message of the detail
  */
 export function FROM_OTHER_PACKAGE(_tip) {
     return Exception(5, _tip ? `resource("${_tip}") is from a different package` : "resource is from a different package");
 }
 
 /**
- * 定位节点失败
+ * exception of fail in locating node
  */
 export function LOCATE_NODE_FAIL(_tip) {
     return Exception(6, _tip ? `fail to locate the node(${_tip}) for operation` : "fail to locate the node for operation");
 }
 
 /**
- * 定位资源失败
+ * exception of fail in locating the resource
  */
 export function LOCATE_RESOURCE_FAIL(_tip) {
    return Exception(7, _tip ? `fail to locate the resource for operation: ${_tip}` : "fail to locate the resource for operation");
 }
 
 /**
- * 请求资源失败
- * @param {String} _tip 细节提示信息
+ * exception of acquiring the resource
+ * @param {String} _tip message of the detail
  */
 export function ACQUIRE_RESOURCE_FAIL(_tip) {
     return Exception(8, _tip ? `fail to acquire resource: ${_tip}` : "fail to acquire resource");
 }
 
 /**
- * 断言
- * @param {*} _cond 断言条件
- * @param {*} _error 条件不成立时抛出的异常
+ * assert
+ * @param {*} _cond the expression of a condition to be checked
+ * @param {*} _error the exception will be thrown if the condition is false
+ * @returns {*} the result of the "_cond"
  */
 export function assert(_cond, _error) {
     if (!_cond) {
