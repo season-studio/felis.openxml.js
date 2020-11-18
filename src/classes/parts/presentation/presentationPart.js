@@ -1,6 +1,6 @@
 import { readonly, error, genRandId } from "../../../common";
 import { OpenXmlElement, OpenXmlPart, OpenXmlPurePart } from "../../basic";
-import { presentation as presentationSchemas, office as officeSchemas }  from "../../elements";
+import { presentation as presentationSchemas, office as officeSchemas }  from "../../schemas";
 import path from "path";
 
 const assert = error.assert;
@@ -39,11 +39,11 @@ class SlideSet {
      * the new set of id will start from MIN_ID
      */
     arrangeId() {
-        const totalNode = this.parent.contentDom.primaryNode;
+        const rootNode = this.parent.contentDom.documentElement;
         let id = SlideSet.MIN_ID;
         for (let { slideId } of this.selfElement.items()) {
             const oriId = slideId.id;
-            const relElements = totalNode.xpathSelect(`.//*[local-name(.)='sldId' and @id='${oriId}']`);
+            const relElements = rootNode.xpathSelect(`.//*[local-name(.)='sldId' and @id='${oriId}']`);
             for (let relIdx in relElements) {
                 relElements[relIdx].setAttribute("id", id);
             }

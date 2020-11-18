@@ -30,6 +30,20 @@ export class OpenXmlPurePart extends OpenXmlPart {
      * get the instance of OpenXmlElement for the primary element in the DOM
      */
     get primaryElement() {
-        return OpenXmlElement.instanced(this.contentDom.primaryNode);
+        return OpenXmlElement.instanced(this.contentDom.documentElement);
+    }
+
+    /**
+     * create a new element of the given class
+     * @param {Class} _elementClass the class of the new element
+     * @param {*} _options the options for the creation action
+     */
+    createElement(_elementClass, _options) {
+        const root = this.primaryElement;
+        if (root) {
+            return root.createElement(_elementClass, _options);
+        } else {
+            return _elementClass.createElement && _elementClass.createElement(this.contentDom, null, _options);
+        }
     }
 }

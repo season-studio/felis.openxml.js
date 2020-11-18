@@ -2,10 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+var regeneratorRuntime = require('regenerator-runtime');
+var path = require('path');
 
-var regeneratorRuntime = _interopDefault(require('regenerator-runtime'));
-var path = _interopDefault(require('path'));
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(regeneratorRuntime);
+var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -346,7 +349,7 @@ function readonly(_obj, _keyOrMap, _value) {
  * @param {String} _prefix prefix of the destination id
  * @param {*} _radix 
  */
-function genRandId(_prefix, _radix) {
+function genRandId$1(_prefix, _radix) {
   return "".concat(_prefix || "").concat(Date.now().toString(_radix)).concat(Math.random().toString(_radix).substr(2, 3));
 }
 
@@ -371,7 +374,7 @@ var IDom = /*#__PURE__*/function () {
       NoImplemented();
     }
   }, {
-    key: "primaryNode",
+    key: "documentElement",
     get: function get() {
       NoImplemented();
     }
@@ -390,7 +393,7 @@ var IDom = /*#__PURE__*/function () {
   return IDom;
 }();
 
-var regenerator = regeneratorRuntime;
+var regenerator = regeneratorRuntime__default['default'];
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
@@ -661,7 +664,7 @@ var OpenXmlPackage = /*#__PURE__*/function () {
  */
 
 
-var OpenPackage = {
+var OpenXmlPackage$1 = {
   /**
    * Open a package, and return an instance of OpenXmlPackage
    * @param {IApplication} _app an implementation of IApplication
@@ -745,9 +748,9 @@ var OpenXmlPart = /*#__PURE__*/function () {
      * @param {*} _partPath the path of the part file
      */
     value: function getRelationshipPath(_partPath) {
-      var partDir = path.dirname(_partPath);
-      var partFileName = path.basename(_partPath);
-      return path.join(partDir, "./_rels/".concat(partFileName, ".rels")).replace(/\\/ig, "/");
+      var partDir = path__default['default'].dirname(_partPath);
+      var partFileName = path__default['default'].basename(_partPath);
+      return path__default['default'].join(partDir, "./_rels/".concat(partFileName, ".rels")).replace(/\\/ig, "/");
     }
     /**
      * load and instance a part from a package
@@ -766,12 +769,12 @@ var OpenXmlPart = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!OpenPackage.isPackage(_package)) {
+                if (!OpenXmlPackage$1.isPackage(_package)) {
                   _context.next = 13;
                   break;
                 }
 
-                _path2 = String(_path).replace(/\\/ig, "/").replace(/^\//, "");
+                _path2 = String(_path || this.DefaultPath).replace(/\\/ig, "/").replace(/^\//, "");
                 relationshipPath = OpenXmlPart.getRelationshipPath(_path2);
                 _context.next = 5;
                 return _package.getFile(_path2, this.ContentFormat);
@@ -872,6 +875,38 @@ var OpenXmlPart = /*#__PURE__*/function () {
       return convert;
     }()
     /**
+     * create a new part
+     * It should be override by the subclass if subclass needs this function
+     * @param {OpenXmlPackage} _package the package store the new part
+     * @param {String} _path the path in the package which the new part will save to
+     * @returns {OpenXmlPart} the instance of the new part
+     */
+
+  }, {
+    key: "create",
+    value: function () {
+      var _create = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3(_package, _path) {
+        return regenerator.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                NoImplemented("".concat(this.name, ".create"));
+
+              case 1:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function create(_x6, _x7) {
+        return _create.apply(this, arguments);
+      }
+
+      return create;
+    }()
+    /**
      * string of the content's type, may be override by the subclass
      */
 
@@ -967,49 +1002,49 @@ var OpenXmlPart = /*#__PURE__*/function () {
   }, {
     key: "getRelationPart",
     value: function () {
-      var _getRelationPart = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3(_idOrClass) {
+      var _getRelationPart = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4(_idOrClass) {
         var rels, nodeSel, typeAttr, targetPath, ctor, part;
-        return regenerator.wrap(function _callee3$(_context3) {
+        return regenerator.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 rels = this.relationshipDom;
 
                 if (!rels) {
-                  _context3.next = 13;
+                  _context4.next = 13;
                   break;
                 }
 
                 nodeSel = OpenXmlPart.isPrototypeOf(_idOrClass) ? rels.xpathSelect(".//*[local-name(.)='Relationship' and @Type='".concat(_idOrClass.SchemasURI, "']"), true) : rels.xpathSelect(".//*[local-name(.)='Relationship' and @Id='".concat(_idOrClass, "']"), true);
 
                 if (!nodeSel) {
-                  _context3.next = 13;
+                  _context4.next = 13;
                   break;
                 }
 
                 typeAttr = nodeSel.getAttribute("Type");
                 targetPath = String(nodeSel.getAttribute("Target")).replace(/\\/ig, "/");
-                path.isAbsolute(targetPath) || (targetPath = path.join(path.dirname(this.path), targetPath));
+                path__default['default'].isAbsolute(targetPath) || (targetPath = path__default['default'].join(path__default['default'].dirname(this.path), targetPath));
                 ctor = registedParts[typeAttr] || OpenXmlPart;
-                _context3.next = 10;
+                _context4.next = 10;
                 return ctor.load(this["package"], targetPath);
 
               case 10:
-                part = _context3.sent;
+                part = _context4.sent;
                 part && readonly(part, {
                   relationshipId: String(nodeSel.getAttribute("id"))
                 });
-                return _context3.abrupt("return", part);
+                return _context4.abrupt("return", part);
 
               case 13:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
-      function getRelationPart(_x6) {
+      function getRelationPart(_x8) {
         return _getRelationPart.apply(this, arguments);
       }
 
@@ -1024,8 +1059,8 @@ var OpenXmlPart = /*#__PURE__*/function () {
     key: "insertRelationPart",
     value: function insertRelationPart(_part) {
       assert$2(_part instanceof OpenXmlPart, EXPECT_PARAM("_part"));
-      var targetRelPath = path.relative(path.dirname(this.path), _part.path).replace(/\\/ig, "/");
-      var rid = genRandId("R", 16);
+      var targetRelPath = path__default['default'].relative(path__default['default'].dirname(this.path), _part.path).replace(/\\/ig, "/");
+      var rid = genRandId$1("R", 16);
       var rels = this.relationshipDom;
 
       if (!rels) {
@@ -1041,7 +1076,7 @@ var OpenXmlPart = /*#__PURE__*/function () {
       relNode.setAttribute("Target", targetRelPath);
       relNode.setAttribute("Type", _part.constructor.SchemasURI);
       relNode.setAttribute("Id", rid);
-      rels.primaryNode.appendChild(relNode);
+      rels.documentElement.appendChild(relNode);
       return rid;
     }
     /**
@@ -1055,41 +1090,41 @@ var OpenXmlPart = /*#__PURE__*/function () {
     key: "relationParts",
     value: /*#__PURE__*/regenerator.mark(function relationParts(_class) {
       var rels, nodeList, curDir, index, node, relationshipId, type, target, ctor;
-      return regenerator.wrap(function relationParts$(_context4) {
+      return regenerator.wrap(function relationParts$(_context5) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context5.prev = _context5.next) {
             case 0:
               rels = this.relationshipDom;
 
               if (!rels) {
-                _context4.next = 18;
+                _context5.next = 18;
                 break;
               }
 
               nodeList = OpenXmlPart.isPrototypeOf(_class) ? rels.xpathSelect(".//*[local-name(.)='Relationship' and @Type='".concat(_class.SchemasURI, "']")) : typeof _class === "string" ? rels.xpathSelect(".//*[local-name(.)='Relationship' and @Type='".concat(_class, "']")) : rels.xpathSelect(".//*[local-name(.)='Relationship']");
 
               if (!nodeList) {
-                _context4.next = 18;
+                _context5.next = 18;
                 break;
               }
 
-              curDir = path.dirname(this.path);
-              _context4.t0 = regenerator.keys(nodeList);
+              curDir = path__default['default'].dirname(this.path);
+              _context5.t0 = regenerator.keys(nodeList);
 
             case 6:
-              if ((_context4.t1 = _context4.t0()).done) {
-                _context4.next = 18;
+              if ((_context5.t1 = _context5.t0()).done) {
+                _context5.next = 18;
                 break;
               }
 
-              index = _context4.t1.value;
+              index = _context5.t1.value;
               node = nodeList[index];
               relationshipId = node.getAttribute("id");
               type = node.getAttribute("Type");
               target = String(node.getAttribute("Target")).replace(/\\/ig, "/");
-              path.isAbsolute(target) || (target = path.join(curDir, target));
+              path__default['default'].isAbsolute(target) || (target = path__default['default'].join(curDir, target));
               ctor = registedParts[type] || OpenXmlPart;
-              _context4.next = 16;
+              _context5.next = 16;
               return {
                 index: index,
                 relationshipId: relationshipId,
@@ -1100,12 +1135,12 @@ var OpenXmlPart = /*#__PURE__*/function () {
               };
 
             case 16:
-              _context4.next = 6;
+              _context5.next = 6;
               break;
 
             case 18:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
         }
       }, relationParts, this);
@@ -1121,6 +1156,8 @@ _defineProperty(OpenXmlPart, "ContentType", undefined);
 _defineProperty(OpenXmlPart, "SchemasURI", undefined);
 
 _defineProperty(OpenXmlPart, "ContentFormat", "text");
+
+_defineProperty(OpenXmlPart, "DefaultPath", "");
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -1272,6 +1309,11 @@ var OpenXmlAttribute = /*#__PURE__*/function () {
   return OpenXmlAttribute;
 }();
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 var assert$3 = assert;
 /**
  * register map for subclass OpenXML elements
@@ -1283,13 +1325,33 @@ var registedElements = {};
  */
 
 var OpenXmlElement = /*#__PURE__*/function () {
-  function OpenXmlElement(_node) {
+  function OpenXmlElement(_node, _options) {
     _classCallCheck(this, OpenXmlElement);
 
     assert$3(_node, EXPECT_PARAM("_node"));
     readonly(this, {
       node: _node
     });
+
+    if (_options) {
+      var children = _options.children || [];
+
+      var _iterator = _createForOfIteratorHelper(children),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          assert$3(item instanceof OpenXmlElement, EXPECT_PARAM("item in options.children must be instance of OpenXmlElement"));
+
+          _node.appendChild(item.node);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
   } //#region members should be override by subclass
 
   /**
@@ -1350,7 +1412,7 @@ var OpenXmlElement = /*#__PURE__*/function () {
 
   }, {
     key: "descendantOne",
-    value: function descendantOne(_class, _exSelector) {
+    value: function descendantOne(_arg) {
       var selectExp = this.constructor.genXPath(".//", _arg);
       var node = this.node.xpathSelect(selectExp, true);
       return node && (OpenXmlElement.instanced(1 !== node.nodeType ? node.ownerElement : node) || node);
@@ -1365,6 +1427,19 @@ var OpenXmlElement = /*#__PURE__*/function () {
     value: function appendChild(_element) {
       assert$3(_element instanceof OpenXmlElement, EXPECT_PARAM("_element"));
       this.node.appendChild(_element.node);
+    }
+    /**
+     * insert a element as a child of this element in a special postion
+     * @param {OpenXmlElement} _element the element will be inserted
+     * @param {Number} _position the index of the element will be inserted in, ignore this parameter will insert the element at the end of this element.
+     */
+
+  }, {
+    key: "insertChild",
+    value: function insertChild(_element, _position) {
+      assert$3(_element instanceof OpenXmlElement, EXPECT_PARAM("_element"));
+      var nodeList = this.node.childNodes;
+      this.node.insertBefore(_element.node, nodeList && typeof _position === "number" && _position >= 0 && _position < nodeList.length ? nodeList[_position] : null);
     }
     /**
      * insert a element as the sibling of the current element
@@ -1383,13 +1458,14 @@ var OpenXmlElement = /*#__PURE__*/function () {
     /**
      * create a new element of the given class
      * @param {Class} _elementClass the class of the new element
+     * @param {*} _options the options for the creation action
      */
 
   }, {
     key: "createElement",
-    value: function createElement(_elementClass) {
+    value: function createElement(_elementClass, _options) {
       assert$3(OpenXmlElement.isPrototypeOf(_elementClass), EXPECT_PARAM("_elementClass"));
-      return _elementClass.createElement(this.node.ownerDocument, this);
+      return _elementClass.createElement(this.node.ownerDocument, this, _options);
     }
     /**
      * remove the current from the DOM
@@ -1398,7 +1474,7 @@ var OpenXmlElement = /*#__PURE__*/function () {
   }, {
     key: "remove",
     value: function remove() {
-      var parent = this.node.parent;
+      var parent = this.node.parentNode;
       parent && parent.removeChild(this.node);
     }
     /**
@@ -1470,6 +1546,13 @@ var OpenXmlElement = /*#__PURE__*/function () {
     key: "textContent",
     get: function get() {
       return this.node.textContent;
+    }
+    /**
+     * set the text content of this instance
+     */
+    ,
+    set: function set(_val) {
+      this.node.textContent = _val;
     }
     /**
      * get the class name of this instance
@@ -1549,30 +1632,31 @@ var OpenXmlElement = /*#__PURE__*/function () {
      * create a new element of the invoker class
      * @param {IDOM|Document} _dom the isntance of the IDOM for creating element
      * @param {Element} _parentElement the parent element which will contain the new element
+     * @param {*} _options the options for the creation action
      */
 
   }, {
     key: "createElement",
-    value: function createElement(_dom, _parentElement) {
+    value: function createElement(_dom, _parentElement, _options) {
       assert$3(_dom, EXPECT_PARAM("_dom"));
 
       var node = _dom.createElementNS(this.NamespaceUri, this.qualifiedName(_parentElement));
 
       if (node) {
-        var element = new this(node);
-        this.createDetail(element);
+        var element = new this(node, _options);
+        this.createDetail(element, _options);
         return element;
       }
     }
     /**
      * the action for preparing the detail data of a new instance
-     * @param {OpenXmlElement} _element 
+     * @param {OpenXmlElement} _element the target element
+     * @param {*} _options the options for the creation action
      */
 
   }, {
     key: "createDetail",
-    value: function createDetail(_element) {
-      assert$3(_element instanceof this, EXPECT_PARAM("_element must be instance of ".concat(this.name)));
+    value: function createDetail(_element, _options) {// assert(_element instanceof this, error.EXPECT_PARAM(`_element must be instance of ${this.name}`));
     }
     /**
      * generate a xpath part of this class
@@ -1637,6 +1721,23 @@ var OpenXmlPurePart = /*#__PURE__*/function (_OpenXmlPart) {
 
 
   _createClass(OpenXmlPurePart, [{
+    key: "createElement",
+
+    /**
+     * create a new element of the given class
+     * @param {Class} _elementClass the class of the new element
+     * @param {*} _options the options for the creation action
+     */
+    value: function createElement(_elementClass, _options) {
+      var root = this.primaryElement;
+
+      if (root) {
+        return root.createElement(_elementClass, _options);
+      } else {
+        return _elementClass.createElement && _elementClass.createElement(this.contentDom, null, _options);
+      }
+    }
+  }, {
     key: "content",
     get: function get() {
       return this.contentDom.toString();
@@ -1648,7 +1749,7 @@ var OpenXmlPurePart = /*#__PURE__*/function (_OpenXmlPart) {
   }, {
     key: "primaryElement",
     get: function get() {
-      return OpenXmlElement.instanced(this.contentDom.primaryNode);
+      return OpenXmlElement.instanced(this.contentDom.documentElement);
     }
   }]);
 
@@ -1694,10 +1795,10 @@ var Presentation2006 = /*#__PURE__*/function (_OpenXmlElement) {
 
   //#region override the key information
   //#endregion
-  function Presentation2006(_node) {
+  function Presentation2006(_node, _options) {
     _classCallCheck(this, Presentation2006);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return Presentation2006;
@@ -1724,10 +1825,10 @@ var SlideId = OpenXmlElement.register((_temp = _class = /*#__PURE__*/function (_
 
   //#region override the key information
   //#endregion
-  function SlideId(_node) {
+  function SlideId(_node, _options) {
     _classCallCheck(this, SlideId);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the relationship ID
@@ -1740,7 +1841,7 @@ var SlideId = OpenXmlElement.register((_temp = _class = /*#__PURE__*/function (_
       var id = this.getAttribute(AttrRelationshipId);
 
       if (!id) {
-        id = genRandId("R");
+        id = genRandId$1("R");
         this.setAttribute(AttrRelationshipId, id);
       }
 
@@ -1792,10 +1893,10 @@ var SlideIdList = OpenXmlElement.register((_temp$1 = _class$1 = /*#__PURE__*/fun
 
   //#region override the key inforamtion
   //#endregion
-  function SlideIdList(_node) {
+  function SlideIdList(_node, _options) {
     _classCallCheck(this, SlideIdList);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get count of the IDs
@@ -1867,10 +1968,10 @@ var Presentation = OpenXmlElement.register((_temp$2 = _class$2 = /*#__PURE__*/fu
 
   //#region override the key information
   //#endregion
-  function Presentation(_node) {
+  function Presentation(_node, _options) {
     _classCallCheck(this, Presentation);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the list of the slide's id
@@ -1913,10 +2014,10 @@ var NonVisualDrawingProperties = OpenXmlElement.register((_temp$3 = _class$3 = /
 
   //#region override the key information
   //#endregion
-  function NonVisualDrawingProperties(_node) {
+  function NonVisualDrawingProperties(_node, _options) {
     _classCallCheck(this, NonVisualDrawingProperties);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the name information
@@ -1985,10 +2086,10 @@ var NonVisualPropertiesBase = /*#__PURE__*/function (_Presentations) {
 
   var _super = _createSuper$8(NonVisualPropertiesBase);
 
-  function NonVisualPropertiesBase(_node) {
+  function NonVisualPropertiesBase(_node, _options) {
     _classCallCheck(this, NonVisualPropertiesBase);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the name information
@@ -2067,10 +2168,10 @@ var NonVisualGroupShapeProperties = OpenXmlElement.register((_temp$4 = _class$4 
 
   //#region override the key information
   //#endregion
-  function NonVisualGroupShapeProperties(_node) {
+  function NonVisualGroupShapeProperties(_node, _options) {
     _classCallCheck(this, NonVisualGroupShapeProperties);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return NonVisualGroupShapeProperties;
@@ -2088,10 +2189,10 @@ var VisualSlideObject = /*#__PURE__*/function (_Presentations) {
 
   var _super = _createSuper$a(VisualSlideObject);
 
-  function VisualSlideObject(_node) {
+  function VisualSlideObject(_node, _options) {
     _classCallCheck(this, VisualSlideObject);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return VisualSlideObject;
@@ -2110,10 +2211,10 @@ var GroupShapeBase = /*#__PURE__*/function (_VisualSlideObject) {
 
   var _super = _createSuper$b(GroupShapeBase);
 
-  function GroupShapeBase(_node) {
+  function GroupShapeBase(_node, _options) {
     _classCallCheck(this, GroupShapeBase);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the nonvisual properties
@@ -2199,10 +2300,10 @@ var ShapeTree = OpenXmlElement.register((_temp$5 = _class$5 = /*#__PURE__*/funct
 
   //#region override the key information
   //#endregion
-  function ShapeTree(_node) {
+  function ShapeTree(_node, _options) {
     _classCallCheck(this, ShapeTree);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return ShapeTree;
@@ -2225,10 +2326,10 @@ var CommonSlideData = OpenXmlElement.register((_temp$6 = _class$6 = /*#__PURE__*
 
   //#region override the key information
   //#endregion
-  function CommonSlideData(_node) {
+  function CommonSlideData(_node, _options) {
     _classCallCheck(this, CommonSlideData);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the tree of the shapes
@@ -2268,10 +2369,10 @@ var Slide = OpenXmlElement.register((_temp$7 = _class$7 = /*#__PURE__*/function 
 
   //#region override the key information
   //#endregion
-  function Slide(_node) {
+  function Slide(_node, _options) {
     _classCallCheck(this, Slide);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the common data of the slide
@@ -2312,10 +2413,10 @@ var NonVisualShapeProperties = OpenXmlElement.register((_temp$8 = _class$8 = /*#
 
   //#region override the key inforamtion
   //#endregion
-  function NonVisualShapeProperties(_node) {
+  function NonVisualShapeProperties(_node, _options) {
     _classCallCheck(this, NonVisualShapeProperties);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return NonVisualShapeProperties;
@@ -2338,10 +2439,10 @@ var NonVisualPictureProperties = OpenXmlElement.register((_temp$9 = _class$9 = /
 
   //#region override the key information
   //#endregion
-  function NonVisualPictureProperties(_node) {
+  function NonVisualPictureProperties(_node, _options) {
     _classCallCheck(this, NonVisualPictureProperties);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return NonVisualPictureProperties;
@@ -2364,10 +2465,10 @@ var GroupShape = OpenXmlElement.register((_temp$a = _class$a = /*#__PURE__*/func
 
   //#region override the key information
   //#endregion
-  function GroupShape(_node) {
+  function GroupShape(_node, _options) {
     _classCallCheck(this, GroupShape);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
 
   return GroupShape;
@@ -2567,10 +2668,10 @@ var Shape = OpenXmlElement.register((_temp$c = _class$c = /*#__PURE__*/function 
 
   //#region override the key information
   //#endregion
-  function Shape(_node) {
+  function Shape(_node, _options) {
     _classCallCheck(this, Shape);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the nonvisual properties
@@ -2620,10 +2721,10 @@ var Picture = OpenXmlElement.register((_temp$d = _class$d = /*#__PURE__*/functio
 
   //#region override the key information
   //#endregion
-  function Picture(_node) {
+  function Picture(_node, _options) {
     _classCallCheck(this, Picture);
 
-    return _super.call(this, _node);
+    return _super.call(this, _node, _options);
   }
   /**
    * get the nonvisual properties
@@ -2665,25 +2766,1571 @@ var index$2 = /*#__PURE__*/Object.freeze({
   namespaceURI: namespaceURI$1
 });
 
-var index$3 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  office: index,
-  presentation: index$2,
-  drawing: index$1
-});
+var main$2 = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 
-var _class$e, _temp$e;
+var namespaceURI$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  main: main$2
+});
 
 function _createSuper$m(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$n(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct$n() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * basic class for elements defined in wordprocessing2006
+ */
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+var Wordprocessing2006 = /*#__PURE__*/function (_OpenXmlElement) {
+  _inherits(Wordprocessing2006, _OpenXmlElement);
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  var _super = _createSuper$m(Wordprocessing2006);
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-var assert$4 = assert; //#region inner class
+  //#region override the key information
+  //#endregion
+  function Wordprocessing2006(_node, _options) {
+    _classCallCheck(this, Wordprocessing2006);
+
+    return _super.call(this, _node, _options);
+  }
+
+  return Wordprocessing2006;
+}(OpenXmlElement);
+
+_defineProperty(Wordprocessing2006, "NamespaceUri", main$2);
+
+_defineProperty(Wordprocessing2006, "DefaultPrefix", "w");
+
+var _class$e, _temp$e;
+
+function _createSuper$n(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$o(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$o() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+var AttrValue = new OpenXmlAttribute("val", main$2, "w");
+/**
+ * class of the paragraph style id, element with tag "w:pStyle"
+ */
+
+var ParagraphStyleId = OpenXmlElement.register((_temp$e = _class$e = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(ParagraphStyleId, _Wordprocessing);
+
+  var _super = _createSuper$n(ParagraphStyleId);
+
+  //#region override the key information
+  //#endregion
+  function ParagraphStyleId(_node, _options) {
+    _classCallCheck(this, ParagraphStyleId);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get the value
+   */
+
+
+  _createClass(ParagraphStyleId, [{
+    key: "value",
+    get: function get() {
+      return this.getAttribute(AttrValue);
+    }
+    /**
+     * set the relationship ID
+     */
+    ,
+    set: function set(_val) {
+      if (arguments.length > 0) {
+        this.setAttribute(AttrValue, _val);
+      } else {
+        this.remove();
+      }
+    }
+  }]);
+
+  return ParagraphStyleId;
+}(Wordprocessing2006), _defineProperty(_class$e, "LocalName", "pStyle"), _temp$e));
+
+var _class$f, _temp$f;
+
+function _createSuper$o(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$p(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$p() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the table style conditional formatting paragraph properties, element with tag "w:pPr"
+ */
+
+var StyleParagraphProperties = OpenXmlElement.register((_temp$f = _class$f = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(StyleParagraphProperties, _Wordprocessing);
+
+  var _super = _createSuper$o(StyleParagraphProperties);
+
+  //#region override the key information
+  //#endregion
+  function StyleParagraphProperties(_node, _options) {
+    _classCallCheck(this, StyleParagraphProperties);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get the paragraph style id
+   */
+
+
+  _createClass(StyleParagraphProperties, [{
+    key: "paragraphStyleId",
+    get: function get() {
+      var element = this.childOne(ParagraphStyleId);
+      return element && element.value;
+    }
+    /**
+     * set the paragraph style id
+     */
+    ,
+    set: function set(_val) {
+      var element = this.childOne(ParagraphStyleId);
+
+      if (!element && arguments.length > 0) {
+        element = this.createElement(ParagraphStyleId);
+        element && this.appendChild(element);
+      }
+
+      element && (element.value = _val);
+    }
+  }]);
+
+  return StyleParagraphProperties;
+}(Wordprocessing2006), _defineProperty(_class$f, "LocalName", "pPr"), _temp$f));
+
+var _class$g, _temp$g;
+
+function _createSuper$p(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$q(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$q() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the text, element with tag "w:t"
+ */
+
+var Text$1 = OpenXmlElement.register((_temp$g = _class$g = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(Text, _Wordprocessing);
+
+  var _super = _createSuper$p(Text);
+
+  //#region override the key information
+  //#endregion
+  function Text(_node, _options) {
+    _classCallCheck(this, Text);
+
+    return _super.call(this, _node, _options);
+  }
+
+  _createClass(Text, null, [{
+    key: "createDetail",
+    value: function createDetail(_text, _options) {
+      _text.setAttribute("xml:space", "preserve");
+
+      _options && _options.text && (_text.textContent = _options.text);
+    }
+  }]);
+
+  return Text;
+}(Wordprocessing2006), _defineProperty(_class$g, "LocalName", "t"), _temp$g));
+
+var _class$h, _temp$h;
+
+function _createSuper$q(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$r(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$r() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the test run, element with tag "w:r"
+ */
+
+var Run$1 = OpenXmlElement.register((_temp$h = _class$h = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(Run, _Wordprocessing);
+
+  var _super = _createSuper$q(Run);
+
+  //#region override the key information
+  //#endregion
+  function Run(_node, _options) {
+    _classCallCheck(this, Run);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get all text in the element
+   */
+
+
+  _createClass(Run, [{
+    key: "textContent",
+    get: function get() {
+      var items = this.descendants(Text$1).map(function (text) {
+        return text.textContent;
+      });
+      return items.join("");
+    }
+  }]);
+
+  return Run;
+}(Wordprocessing2006), _defineProperty(_class$h, "LocalName", "r"), _temp$h));
+
+var _class$i, _temp$i;
+
+function _createSuper$r(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$s(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$s() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the paragraph, element with tag "w:p"
+ */
+
+var Paragraph$1 = OpenXmlElement.register((_temp$i = _class$i = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(Paragraph, _Wordprocessing);
+
+  var _super = _createSuper$r(Paragraph);
+
+  //#region override the key information
+  //#endregion
+  function Paragraph(_node, _options) {
+    _classCallCheck(this, Paragraph);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get all text in the element
+   */
+
+
+  _createClass(Paragraph, [{
+    key: "textContent",
+    get: function get() {
+      var items = this.descendants(Text$1).map(function (text) {
+        return text.textContent;
+      });
+      return items.join("");
+    }
+    /**
+     * get the properties
+     */
+
+  }, {
+    key: "styleProperties",
+    get: function get() {
+      var prop = this.childOne(StyleParagraphProperties);
+
+      if (!prop) {
+        prop = this.createElement(StyleParagraphProperties);
+        prop && this.insertChild(prop, 0);
+      }
+
+      return prop;
+    }
+  }]);
+
+  return Paragraph;
+}(Wordprocessing2006), _defineProperty(_class$i, "LocalName", "p"), _temp$i));
+
+var _class$j, _temp$j;
+
+function _createSuper$s(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$t(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$t() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the document's body, element with tag "body"
+ */
+
+var Body = OpenXmlElement.register((_temp$j = _class$j = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(Body, _Wordprocessing);
+
+  var _super = _createSuper$s(Body);
+
+  //#region override the key information
+  //#endregion
+  function Body(_node, _options) {
+    _classCallCheck(this, Body);
+
+    return _super.call(this, _node, _options);
+  }
+
+  return Body;
+}(Wordprocessing2006), _defineProperty(_class$j, "LocalName", "body"), _temp$j));
+
+var _class$k, _temp$k;
+
+function _createSuper$t(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$u(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$u() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the document, element with tag "document"
+ */
+
+var Document = OpenXmlElement.register((_temp$k = _class$k = /*#__PURE__*/function (_Wordprocessing) {
+  _inherits(Document, _Wordprocessing);
+
+  var _super = _createSuper$t(Document);
+
+  //#region override the key information
+  //#endregion
+  function Document(_node, _options) {
+    _classCallCheck(this, Document);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get the body of the document
+   */
+
+
+  _createClass(Document, [{
+    key: "body",
+    get: function get() {
+      var element = this.childOne(Body);
+
+      if (!element) {
+        element = this.createElement(Body);
+        element && this.appendChild(element);
+      }
+
+      return element;
+    }
+  }]);
+
+  return Document;
+}(Wordprocessing2006), _defineProperty(_class$k, "LocalName", "document"), _temp$k));
+
+var index$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  AttrValue: AttrValue,
+  ParagraphStyleId: ParagraphStyleId,
+  StyleParagraphProperties: StyleParagraphProperties,
+  Text: Text$1,
+  Run: Run$1,
+  Paragraph: Paragraph$1,
+  Body: Body,
+  Document: Document,
+  namespaceURI: namespaceURI$3
+});
+
+var main$3 = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+
+var namespaceURI$4 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  main: main$3
+});
+
+function _createSuper$u(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$v(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$v() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * basic class for elements defined in spreadsheet2006
+ */
+
+var Spreadsheet2006 = /*#__PURE__*/function (_OpenXmlElement) {
+  _inherits(Spreadsheet2006, _OpenXmlElement);
+
+  var _super = _createSuper$u(Spreadsheet2006);
+
+  //#region override the key information
+  //#endregion
+  function Spreadsheet2006(_node, _options) {
+    _classCallCheck(this, Spreadsheet2006);
+
+    return _super.call(this, _node, _options);
+  }
+
+  return Spreadsheet2006;
+}(OpenXmlElement);
+
+_defineProperty(Spreadsheet2006, "NamespaceUri", main$3);
+
+_defineProperty(Spreadsheet2006, "DefaultPrefix", "x");
+
+var _class$l, _temp$l, _class2$1, _temp2$1;
+
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
+
+function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _createSuper$v(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$w(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$w() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the sheet's id in sheet list, element with tag "sheet"
+ */
+
+var SheetId = OpenXmlElement.register((_temp$l = _class$l = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(SheetList, _Spreadsheet);
+
+  var _super = _createSuper$v(SheetList);
+
+  //#region override the key information
+  //#endregion
+  function SheetList(_node, _options) {
+    _classCallCheck(this, SheetList);
+
+    return _super.call(this, _node, _options);
+  }
+  /**
+   * get the id
+   */
+
+
+  _createClass(SheetList, [{
+    key: "id",
+    get: function get() {
+      return this.getAttribute("sheetId");
+    }
+    /**
+     * set the id
+     */
+    ,
+    set: function set(_val) {
+      this.setAttribute("sheetId", _val);
+    }
+    /**
+     * get the relationship ID
+     */
+
+  }, {
+    key: "relationshipId",
+    get: function get() {
+      var id = this.getAttribute(AttrRelationshipId);
+
+      if (!id) {
+        id = genRandId("R");
+        this.setAttribute(AttrRelationshipId, id);
+      }
+
+      return id;
+    }
+    /**
+     * set the relationship ID
+     */
+    ,
+    set: function set(_val) {
+      this.setAttribute(AttrRelationshipId, _val || utility.genRandId("R", 16));
+    }
+    /**
+     * get the name of the sheet
+     */
+
+  }, {
+    key: "name",
+    get: function get() {
+      return this.getAttribute("name");
+    }
+    /**
+     * set the name of the sheet
+     */
+    ,
+    set: function set(_val) {
+      this.setAttribute("name", _val);
+    }
+  }]);
+
+  return SheetList;
+}(Spreadsheet2006), _defineProperty(_class$l, "LocalName", "sheet"), _temp$l));
+/**
+ * class of the list of sheet, element with tag "sheets"
+ */
+
+var SheetList = OpenXmlElement.register((_temp2$1 = _class2$1 = /*#__PURE__*/function (_Spreadsheet2) {
+  _inherits(SheetList, _Spreadsheet2);
+
+  var _super2 = _createSuper$v(SheetList);
+
+  //#region override the key information
+  //#endregion
+  function SheetList(_node, _options) {
+    _classCallCheck(this, SheetList);
+
+    return _super2.call(this, _node, _options);
+  }
+  /**
+   * get a sheet id in the given position
+   * @param {Number} _pos the given position
+   * @return {SheetId}
+   */
+
+
+  _createClass(SheetList, [{
+    key: "getSheetId",
+    value: function getSheetId(_pos) {
+      var list = this.descendants(SheetId);
+      return _pos >= 0 && _pos < list.length && list[_pos];
+    }
+    /**
+     * get a sheet id with the given name
+     * @param {String} _name the name of the sheet
+     * @returns {SheetId}
+     */
+
+  }, {
+    key: "getSheetIdByName",
+    value: function getSheetIdByName(_name) {
+      var _iterator = _createForOfIteratorHelper$1(this.descendants(SheetId)),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+
+          if (_name === item.name) {
+            return item;
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+    /**
+     * get an iterator for enumerating all sheet's ids
+     */
+
+  }, {
+    key: "iterator",
+    value: /*#__PURE__*/regenerator.mark(function iterator() {
+      var _iterator2, _step2, item;
+
+      return regenerator.wrap(function iterator$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _iterator2 = _createForOfIteratorHelper$1(this.descendants(SheetId));
+              _context.prev = 1;
+
+              _iterator2.s();
+
+            case 3:
+              if ((_step2 = _iterator2.n()).done) {
+                _context.next = 9;
+                break;
+              }
+
+              item = _step2.value;
+              _context.next = 7;
+              return item;
+
+            case 7:
+              _context.next = 3;
+              break;
+
+            case 9:
+              _context.next = 14;
+              break;
+
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](1);
+
+              _iterator2.e(_context.t0);
+
+            case 14:
+              _context.prev = 14;
+
+              _iterator2.f();
+
+              return _context.finish(14);
+
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, iterator, this, [[1, 11, 14, 17]]);
+    })
+    /**
+     * create a new id in this list
+     * @returns {SheetId}
+     */
+
+  }, {
+    key: "createId",
+    value: function createId() {
+      var id = this.createElement(SheetId);
+      id && this.appendChild(id);
+      return id;
+    }
+  }]);
+
+  return SheetList;
+}(Spreadsheet2006), _defineProperty(_class2$1, "LocalName", "sheets"), _temp2$1));
+
+var _class$m, _temp$m;
+
+function _createSuper$w(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$x(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$x() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the workbook, element with tag "workbook"
+ */
+
+var Workbook = OpenXmlElement.register((_temp$m = _class$m = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(Workbook, _Spreadsheet);
+
+  var _super = _createSuper$w(Workbook);
+
+  //#region override the key information
+  //#endregion
+  function Workbook(_node, _options) {
+    _classCallCheck(this, Workbook);
+
+    return _super.call(this, _node, _options);
+  }
+
+  _createClass(Workbook, [{
+    key: "sheetList",
+    get: function get() {
+      var list = this.childOne(SheetList);
+
+      if (!list) {
+        list = this.createElement(SheetList);
+        list && this.appendChild(list);
+      }
+
+      return list;
+    }
+  }]);
+
+  return Workbook;
+}(Spreadsheet2006), _defineProperty(_class$m, "LocalName", "workbook"), _temp$m));
+
+var _class$n, _temp$n, _class2$2, _temp2$2;
+
+function _createSuper$x(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$y(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$y() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the text for share string
+ * @private
+ */
+
+var ShareStringText = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(ShareStringText, _Spreadsheet);
+
+  var _super = _createSuper$x(ShareStringText);
+
+  //#region override the key information
+  //#endregion
+  function ShareStringText(_node, _options) {
+    _classCallCheck(this, ShareStringText);
+
+    return _super.call(this, _node, _options);
+  }
+
+  return ShareStringText;
+}(Spreadsheet2006);
+/**
+ * class of the share string item, element with tag "si"
+ */
+
+
+_defineProperty(ShareStringText, "LocalName", "t");
+
+var ShareStringItem = OpenXmlElement.register((_temp$n = _class$n = /*#__PURE__*/function (_Spreadsheet2) {
+  _inherits(ShareStringItem, _Spreadsheet2);
+
+  var _super2 = _createSuper$x(ShareStringItem);
+
+  //#region override the key information
+  //#endregion
+  function ShareStringItem(_node, _options) {
+    _classCallCheck(this, ShareStringItem);
+
+    return _super2.call(this, _node, _options);
+  }
+
+  _createClass(ShareStringItem, [{
+    key: "toString",
+    value: function toString() {
+      return this.text;
+    }
+  }, {
+    key: "text",
+    get: function get() {
+      var text = this.childOne(ShareStringText);
+      return text && text.textContent;
+    },
+    set: function set(_val) {
+      var text = this.childOne(ShareStringText);
+
+      if (!text) {
+        text = this.createElement(ShareStringText);
+        text && this.appendChild(text);
+      }
+
+      text && (text.textContent = _val);
+    }
+  }]);
+
+  return ShareStringItem;
+}(Spreadsheet2006), _defineProperty(_class$n, "LocalName", "si"), _temp$n));
+var $sst = Symbol("ShareStringStable.sst");
+/**
+ * class of the share string table, element with tag "sst"
+ */
+
+var ShareStringTable = OpenXmlElement.register((_temp2$2 = _class2$2 = /*#__PURE__*/function (_Spreadsheet3) {
+  _inherits(ShareStringTable, _Spreadsheet3);
+
+  var _super3 = _createSuper$x(ShareStringTable);
+
+  //#region override the key information
+  //#endregion
+  function ShareStringTable(_node, _options) {
+    var _this;
+
+    _classCallCheck(this, ShareStringTable);
+
+    _this = _super3.call(this, _node, _options);
+
+    _this.reload();
+
+    return _this;
+  }
+  /**
+   * get all items of the share strings
+   */
+
+
+  _createClass(ShareStringTable, [{
+    key: "add",
+
+    /**
+     * add a new share string item
+     * if there is already a string with the same value, this function will return the old one instead of insert a new one
+     * @param {String} _text the value of the string
+     * @return {Number} the index of the string
+     */
+    value: function add(_text) {
+      // return if there is already a string with the same value
+      _text = String(_text);
+      var items = this.items();
+
+      for (var index in items) {
+        var _item = items[index];
+
+        if (String(_item) === _text) {
+          return index;
+        }
+      } // create a new string if the value is not in the table yet
+
+
+      var item = this.createElement(ShareStringItem);
+
+      if (item) {
+        item.text = _text;
+        this.appendChild(item);
+        this[$sst].push(item);
+        return this[$sst].length - 1;
+      }
+    }
+    /**
+     * reload all the share strings
+     */
+
+  }, {
+    key: "reload",
+    value: function reload() {
+      this[$sst] = this.children(ShareStringItem);
+    }
+  }, {
+    key: "items",
+    get: function get() {
+      if (0 >= this[$sst].length) {
+        this[$sst] = this.children(ShareStringItem);
+      }
+
+      return this[$sst];
+    }
+  }]);
+
+  return ShareStringTable;
+}(Spreadsheet2006), _defineProperty(_class2$2, "LocalName", "sst"), _temp2$2));
+
+var _class$o, _temp$o, _class2$3, _temp2$3;
+
+function _createForOfIteratorHelper$2(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
+
+function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _createSuper$y(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$z(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$z() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of column information, element with tag "col"
+ */
+
+var ColumnInformation = OpenXmlElement.register((_temp$o = _class$o = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(ColumnInformation, _Spreadsheet);
+
+  var _super = _createSuper$y(ColumnInformation);
+
+  function ColumnInformation() {
+    _classCallCheck(this, ColumnInformation);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(ColumnInformation, [{
+    key: "width",
+    //#region override the key information
+    //#endregion
+
+    /**
+     * get the width information
+     */
+    get: function get() {
+      var customWidth = this.getAttribute("customWidth");
+      return customWidth && Number(this.getAttribute("width"));
+    }
+    /**
+     * set the width information
+     * set as undefined will clear the setting
+     */
+    ,
+    set: function set(_val) {
+      if (typeof _val === "number") {
+        this.setAttribute("width", _val);
+        this.setAttribute("customWidth", 1);
+      } else if (_val === undefined || _val === null) {
+        this.removeAttribute("width");
+        this.removeAttribute("customWidth");
+      }
+    }
+    /**
+     * get the max index of column affected by this information 
+     */
+
+  }, {
+    key: "maxIndex",
+    get: function get() {
+      return Number(this.getAttribute("max"));
+    }
+    /**
+     * set the max index of the column affected by this information 
+     */
+    ,
+    set: function set(_val) {
+      typeof _val === "number" && this.setAttribute("max", _val);
+    }
+    /**
+     * get the min index of column affected by this information 
+     */
+
+  }, {
+    key: "minIndex",
+    get: function get() {
+      return Number(this.getAttribute("min"));
+    }
+    /**
+     * set the min index of the column affected by this information 
+     */
+    ,
+    set: function set(_val) {
+      typeof _val === "number" && this.setAttribute("min", _val);
+    }
+    /**
+     * get the index range of columns affected by this information
+     */
+
+  }, {
+    key: "index",
+    get: function get() {
+      return [this.minIndex, this.maxIndex];
+    }
+    /**
+     * set the index of colum affected by this information 
+     * this function will set the maxIndex ans minIndex with a same value
+     */
+    ,
+    set: function set(_val) {
+      typeof _val === "number" && (this.maxIndex = _val, this.minIndex = _val);
+    }
+  }]);
+
+  return ColumnInformation;
+}(Spreadsheet2006), _defineProperty(_class$o, "LocalName", "col"), _temp$o));
+/**
+ * class of the set of column information, element with tag "cols"
+ */
+
+var ColumnInformationSet = OpenXmlElement.register((_temp2$3 = _class2$3 = /*#__PURE__*/function (_Spreadsheet2) {
+  _inherits(ColumnInformationSet, _Spreadsheet2);
+
+  var _super2 = _createSuper$y(ColumnInformationSet);
+
+  function ColumnInformationSet() {
+    _classCallCheck(this, ColumnInformationSet);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(ColumnInformationSet, [{
+    key: "getInforamtion",
+
+    /**
+     * get the informations of the column index by the given number
+     * @param {Number} _index the index of the column
+     * @return {ColumnInformation} the information object, return undefined if the information is net set.
+     */
+    value: function getInforamtion(_index) {
+      var _iterator = _createForOfIteratorHelper$2(this.items),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+
+          if (_index >= item.minIndex && _index <= item.maxIndex) {
+            return item;
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+    /**
+     * get the informations of the column index by the given number.
+     * different from getInformation, this function will create a new information object if the information had been not set.
+     * @param {Number} _index the index of the column
+     * @return {ColumnInformation} the information object
+     */
+
+  }, {
+    key: "acquireInformation",
+    value: function acquireInformation(_index) {
+      var info = this.getInforamtion(_index);
+
+      if (!info) {
+        info = this.createElement(ColumnInformation);
+        info && (this.appendChild(info), info.index = _index);
+      }
+
+      return info;
+    }
+  }, {
+    key: "items",
+    //#region override the key information
+    //#endregion
+
+    /**
+     * get all informations
+     */
+    get: function get() {
+      return this.children(ColumnInformation);
+    }
+  }]);
+
+  return ColumnInformationSet;
+}(Spreadsheet2006), _defineProperty(_class2$3, "LocalName", "cols"), _temp2$3));
+
+/**
+ * convert the id of the column to the index of the column.
+ * for example: "A" is converted to 1, "BA" is converted to 53
+ * @param {String} _id the id of the column
+ * @returns {Number} the index of the column
+ */
+function columnIdToIndex(_id) {
+  var index = 0;
+  _id = String(_id).toUpperCase();
+
+  for (var pos in _id) {
+    var item = _id.charCodeAt(pos) - 64;
+    index = index * 26 + item;
+  }
+
+  return index;
+}
+/**
+ * convert the index of the column to the id of the column.
+ * @param {Number} _index the index of the column
+ * @returns {String} the id of the column
+ */
+
+function columnIndexToId(_index) {
+  _index = Number(_index);
+
+  if (!isNaN(_index)) {
+    var id = "";
+
+    for (; _index > 0; _index = parseInt(_index / 26)) {
+      var mod = --_index % 26;
+      id = String.fromCharCode(65 + mod) + id;
+    }
+
+    return id;
+  }
+}
+/**
+ * check if the reference id is in correct format
+ * @param {String} _id the reference id
+ * @returns {Boolean}
+ */
+
+function isValidReferenceId(_id) {
+  return /^[A-Z]+\d+$/.test(_id);
+}
+/**
+ * decompose the reference id of the cell to column's id and row's index
+ * @param {String} _id the reference id of the cell
+ * @returns {Object} { colId: <the id of the column>, rowIndex: <the index of the row> }
+ */
+
+function decomposeReferenceId(_id) {
+  var matched = /^([A-Z]+)(\d+)$/.exec(_id);
+  return matched ? {
+    colId: matched[1],
+    rowIndex: Number(matched[2])
+  } : {};
+}
+
+var toolkit = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  columnIdToIndex: columnIdToIndex,
+  columnIndexToId: columnIndexToId,
+  isValidReferenceId: isValidReferenceId,
+  decomposeReferenceId: decomposeReferenceId
+});
+
+var _class$p, _temp$p, _class2$4, _temp2$4, _class3$1, _temp3$1, _class4$1, _temp4$1, _class5, _temp5;
+
+function _createSuper$z(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$A(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$A() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+var assert$4 = assert;
+/**
+ * declared type of the data for value of cell
+ */
+
+var DataType = Object.freeze({
+  Boolean: "b",
+  Number: "n",
+  Error: "e",
+  SharedString: "s",
+  String: "str",
+  InlineString: "inlineStr",
+  Date: "d"
+});
+/**
+ * class of the value of the cell, element with tag "v"
+ */
+
+var CellValue = OpenXmlElement.register((_temp$p = _class$p = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(CellValue, _Spreadsheet);
+
+  var _super = _createSuper$z(CellValue);
+
+  function CellValue() {
+    _classCallCheck(this, CellValue);
+
+    return _super.apply(this, arguments);
+  }
+
+  return CellValue;
+}(Spreadsheet2006), _defineProperty(_class$p, "LocalName", "v"), _temp$p));
+/**
+ * class of the formula of the cell, element with tag "v"
+ */
+
+var CellFormula = OpenXmlElement.register((_temp2$4 = _class2$4 = /*#__PURE__*/function (_Spreadsheet2) {
+  _inherits(CellFormula, _Spreadsheet2);
+
+  var _super2 = _createSuper$z(CellFormula);
+
+  function CellFormula() {
+    _classCallCheck(this, CellFormula);
+
+    return _super2.apply(this, arguments);
+  }
+
+  return CellFormula;
+}(Spreadsheet2006), _defineProperty(_class2$4, "LocalName", "f"), _temp2$4));
+/**
+ * class of the cell of the sheet, element with tag "c"
+ */
+
+var Cell = OpenXmlElement.register((_temp3$1 = _class3$1 = /*#__PURE__*/function (_Spreadsheet3) {
+  _inherits(Cell, _Spreadsheet3);
+
+  var _super3 = _createSuper$z(Cell);
+
+  function Cell() {
+    _classCallCheck(this, Cell);
+
+    return _super3.apply(this, arguments);
+  }
+
+  _createClass(Cell, [{
+    key: "styleIndex",
+    //#region override the key information
+    //#endregion
+
+    /**
+     * get the index of the style
+     */
+    get: function get() {
+      return Number(this.getAttribute("s"));
+    }
+    /**
+     * set the index of the style
+     */
+    ,
+    set: function set(_val) {
+      if (typeof _val === "number") {
+        this.setAttribute("s", _val);
+      } else if (_val === undefined || _val === null) {
+        this.removeAttribute("s");
+      }
+    }
+    /**
+     * get the reference name of the cell
+     */
+
+  }, {
+    key: "referenceId",
+    get: function get() {
+      return this.getAttribute("r");
+    }
+    /**
+     * set the reference name of the cell
+     */
+    ,
+    set: function set(_val) {
+      _val && this.setAttribute("r", _val);
+    }
+    /**
+     * get the type of the data
+     */
+
+  }, {
+    key: "dataType",
+    get: function get() {
+      return this.getAttribute("t");
+    }
+    /**
+     * set the type of the data
+     */
+    ,
+    set: function set(_val) {
+      this.setAttribute("t", _val);
+    }
+    /**
+     * get the value of the cell
+     */
+
+  }, {
+    key: "value",
+    get: function get() {
+      var val = this.childOne(CellValue);
+      return val && val.textContent;
+    }
+    /**
+     * set the value of the cell
+     */
+    ,
+    set: function set(_val) {
+      var element = this.childOne(CellValue);
+
+      if (!element) {
+        element = this.createElement(CellValue);
+        element && this.appendChild(element);
+      }
+
+      element && (element.textContent = _val);
+    }
+    /**
+     * get the formula of the cell
+     */
+
+  }, {
+    key: "formula",
+    get: function get() {
+      var val = this.childOne(CellFormula);
+      return val && val.textContent;
+    }
+    /**
+     * set the formula of the cell
+     */
+    ,
+    set: function set(_val) {
+      var element = this.childOne(CellFormula);
+
+      if (!element) {
+        element = this.createElement(CellFormula);
+        element && this.appendChild(element);
+      }
+
+      element && (element = _val);
+    }
+  }]);
+
+  return Cell;
+}(Spreadsheet2006), _defineProperty(_class3$1, "LocalName", "c"), _temp3$1));
+/**
+ * class of the Row of the sheet, element with tag "row"
+ */
+
+var Row = OpenXmlElement.register((_temp4$1 = _class4$1 = /*#__PURE__*/function (_Spreadsheet4) {
+  _inherits(Row, _Spreadsheet4);
+
+  var _super4 = _createSuper$z(Row);
+
+  function Row() {
+    _classCallCheck(this, Row);
+
+    return _super4.apply(this, arguments);
+  }
+
+  _createClass(Row, [{
+    key: "acquireCell",
+
+    /**
+     * acquire a cell with a special reference id.
+     * this function will create a new object if the cell had not been set yet
+     * @param {String} _colRefenceId the reference id of the column
+     * @return {Cell} the instance of the target cell
+     */
+    value: function acquireCell(_colRefenceId) {
+      _colRefenceId = String(_colRefenceId).toUpperCase();
+      var cell = this.childOne(Cell.xpath("and @r='".concat(_colRefenceId).concat(this.referenceIndex, "'")));
+
+      if (!cell) {
+        cell = this.createElement(Cell);
+        cell && (this.appendChild(cell), cell.referenceId = "".concat(_colRefenceId).concat(this.referenceIndex));
+      }
+
+      return cell;
+    }
+    /**
+     * get a cell with a special reference id.
+     * @param {String} _colRefenceId the reference id of the column
+     * @return {Cell} the instance of the target cell
+     */
+
+  }, {
+    key: "getCell",
+    value: function getCell(_colRefenceId) {
+      _colRefenceId = String(_colRefenceId).toUpperCase();
+      return this.childOne(Cell.xpath("and @r='".concat(_colRefenceId).concat(this.referenceIndex, "'")));
+    }
+  }, {
+    key: "height",
+    //#region override the key information
+    //#endregion
+
+    /**
+     * get the height of the row
+     */
+    get: function get() {
+      var custom = this.getAttribute("customHeight");
+      return custom && Number(this.getAttribute("ht"));
+    }
+    /**
+     * set the height of the row.
+     * set as undefined will clear the setting
+     */
+    ,
+    set: function set(_val) {
+      if (typeof _val === "number") {
+        this.setAttribute("ht", _val);
+        this.setAttribute("customHeight", 1);
+      } else if (_val === undefined || _val === null) {
+        this.removeAttribute("ht");
+        this.removeAttribute("customHeight");
+      }
+    }
+    /**
+     * get the reference index of the row
+     */
+
+  }, {
+    key: "referenceIndex",
+    get: function get() {
+      return Number(this.getAttribute("r"));
+    }
+    /**
+     * set the reference index of the row
+     */
+    ,
+    set: function set(_val) {
+      typeof _val === "number" && this.setAttribute("r", _val);
+    }
+    /**
+     * get all cells in this row
+     */
+
+  }, {
+    key: "cells",
+    get: function get() {
+      return this.children(Cell);
+    }
+  }]);
+
+  return Row;
+}(Spreadsheet2006), _defineProperty(_class4$1, "LocalName", "row"), _temp4$1));
+/**
+ * class of the data of the sheet, element with tag "sheetData"
+ */
+
+var SheetData = OpenXmlElement.register((_temp5 = _class5 = /*#__PURE__*/function (_Spreadsheet5) {
+  _inherits(SheetData, _Spreadsheet5);
+
+  var _super5 = _createSuper$z(SheetData);
+
+  function SheetData() {
+    _classCallCheck(this, SheetData);
+
+    return _super5.apply(this, arguments);
+  }
+
+  _createClass(SheetData, [{
+    key: "acquireRow",
+
+    /**
+     * acquire a row with a special reference index.
+     * this function will create a new object if the row had not been set yet
+     * @param {Number} _index the reference index
+     * @return {Row} the instance of the target row
+     */
+    value: function acquireRow(_index) {
+      _index = Number(_index);
+
+      if (!isNaN(_index) && _index > 0) {
+        var row = this.childOne(Row.xpath("and @r='".concat(_index, "'")));
+
+        if (!row) {
+          row = this.createElement(Row);
+          row && (this.appendChild(row), row.referenceIndex = _index);
+        }
+
+        return row;
+      }
+    }
+    /**
+     * get a row with a special reference index
+     * @param {Number} _index the reference index
+     * @return {Row} the instance of the target row
+     */
+
+  }, {
+    key: "getRow",
+    value: function getRow(_index) {
+      _index = Number(_index);
+      return !isNaN(_index) && _index > 0 && this.childOne(Row.xpath("and @r='".concat(_index, "'")));
+    }
+    /**
+     * acquire a cell with a special reference id.
+     * this function will create a new object if the cell had not been set yet
+     * @param {String} _refenceId the reference id
+     * @return {Cell} the instance of the target cell
+     */
+
+  }, {
+    key: "acquireCell",
+    value: function acquireCell(_refenceId) {
+      _refenceId = String(_refenceId).toUpperCase();
+      var cell = this.descendantOne(Cell.xpath("and @r='".concat(_refenceId, "'")));
+
+      if (!cell) {
+        var rowIndex = Number(String(_refenceId).replace(/[^\d]/, ""));
+
+        if (!isNaN(rowIndex)) {
+          var row = this.childOne(Row.xpath("and @r='".concat(rowIndex, "'")));
+
+          if (!row) {
+            row = this.createElement(Row);
+            row && (this.appendChild(row), row.referenceIndex = rowIndex);
+          }
+
+          if (row) {
+            cell = row.createElement(Cell);
+            cell && (row.appendChild(cell), cell.referenceId = _refenceId);
+          }
+        }
+      }
+
+      return cell;
+    }
+    /**
+     * get a cell with a special reference id.
+     * @param {String} _refenceId the reference id
+     * @return {Cell} the instance of the target cell
+     */
+
+  }, {
+    key: "getCell",
+    value: function getCell(_refenceId) {
+      _refenceId = String(_refenceId).toUpperCase();
+      return this.descendantOne(Cell.xpath("and @r='".concat(_refenceId, "'")));
+    }
+    /**
+     * fill a range with the data of a table
+     * @param {String} _startReferenceId the reference id of the start cell
+     * @param {Array|Object} _table the data of a table
+     */
+
+  }, {
+    key: "fillRangeWithTable",
+    value: function fillRangeWithTable(_startReferenceId, _table) {
+      assert$4(_table, EXPECT_PARAM("_table"));
+
+      var _toolkit$decomposeRef = decomposeReferenceId(_startReferenceId),
+          colId = _toolkit$decomposeRef.colId,
+          rowIndex = _toolkit$decomposeRef.rowIndex;
+
+      assert$4(colId && rowIndex !== undefined, EXPECT_PARAM("_startReferenceId in correct format"));
+      var startColIndex = columnIdToIndex(colId);
+
+      for (var rowPos in _table) {
+        var rowData = assert$4(_table[rowPos], ACQUIRE_RESOURCE_FAIL("row data of _table[".concat(rowPos, "]")));
+        var row = assert$4(this.acquireRow(rowIndex++), ACQUIRE_RESOURCE_FAIL("row element in sheetData for _table[".concat(rowPos, "]")));
+        var colIndex = startColIndex;
+
+        for (var cellPos in rowData) {
+          var cellData = rowData[cellPos];
+          var cell = assert$4(row.acquireCell(columnIndexToId(colIndex++)), ACQUIRE_RESOURCE_FAIL("cell element in sheetData for _table[".concat(rowPos, "][").concat(cellPos, "]")));
+          cell.value = cellData;
+          cell.dataType = isNaN(Number(cellData)) ? DataType.String : DataType.Number;
+        }
+      }
+    }
+    /**
+     * get a range of data if the SheetData and fill into a table
+     * @param {String} _startReferenceId the reference id of the start cell
+     * @param {Number} _rowCount the count of the rows
+     * @param {Number} _colCount the count of the column
+     * @param {ShareStringTable} _shareStringTable  the table of the share string of the workbook, 
+     *                                              function will not translate the share string if this parameter is ignored
+     * @returns {Array<Array>}
+     */
+
+  }, {
+    key: "getRangeToTable",
+    value: function getRangeToTable(_startReferenceId, _rowCount, _colCount, _shareStringTable) {
+      assert$4(_rowCount > 0 && _colCount > 0, EXPECT_PARAM("_rowCount and _colCount"));
+
+      var _toolkit$decomposeRef2 = decomposeReferenceId(_startReferenceId),
+          colId = _toolkit$decomposeRef2.colId,
+          rowIndex = _toolkit$decomposeRef2.rowIndex;
+
+      assert$4(colId && rowIndex !== undefined, EXPECT_PARAM("_startReferenceId in correct format"));
+      var startColIndex = columnIdToIndex(colId);
+      var maxRowIndex = rowIndex + _rowCount;
+      var maxColIndex = startColIndex + _colCount;
+      var table = [];
+
+      for (; rowIndex < maxRowIndex; rowIndex++) {
+        var row = this.getRow(rowIndex);
+        var rowData = [];
+
+        if (row) {
+          for (var colIndex = startColIndex; colIndex < maxColIndex; colIndex++) {
+            var cellData = undefined;
+            var cell = row.getCell(columnIndexToId(colIndex));
+
+            if (cell) {
+              cellData = cell.value;
+
+              if (DataType.SharedString === cell.dataType && _shareStringTable) {
+                cellData = _shareStringTable.items[cellData];
+              }
+            }
+
+            rowData.push(cellData);
+          }
+        }
+
+        table.push(rowData);
+      }
+
+      return table;
+    }
+  }, {
+    key: "rows",
+    //#region override the key information
+    //#endregion
+
+    /**
+     * get all rows in the sheet
+     */
+    get: function get() {
+      return this.children(Row);
+    }
+  }]);
+
+  return SheetData;
+}(Spreadsheet2006), _defineProperty(_class5, "LocalName", "sheetData"), _temp5));
+
+var _class$q, _temp$q;
+
+function _createSuper$A(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$B(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$B() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * class of the worksheet, element with tag "worksheet"
+ */
+
+var WorkSheet = OpenXmlElement.register((_temp$q = _class$q = /*#__PURE__*/function (_Spreadsheet) {
+  _inherits(WorkSheet, _Spreadsheet);
+
+  var _super = _createSuper$A(WorkSheet);
+
+  function WorkSheet() {
+    _classCallCheck(this, WorkSheet);
+
+    return _super.apply(this, arguments);
+  }
+
+  return WorkSheet;
+}(Spreadsheet2006), _defineProperty(_class$q, "LocalName", "worksheet"), _temp$q));
+
+var index$4 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  Workbook: Workbook,
+  SheetId: SheetId,
+  SheetList: SheetList,
+  ShareStringItem: ShareStringItem,
+  ShareStringTable: ShareStringTable,
+  ColumnInformation: ColumnInformation,
+  ColumnInformationSet: ColumnInformationSet,
+  DataType: DataType,
+  CellValue: CellValue,
+  CellFormula: CellFormula,
+  Cell: Cell,
+  Row: Row,
+  SheetData: SheetData,
+  WorkSheet: WorkSheet,
+  namespaceURI: namespaceURI$4,
+  toolkit: toolkit
+});
+
+var index$5 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  office: index,
+  presentation: index$2,
+  drawing: index$1,
+  wordprocessing: index$3,
+  spreadsheet: index$4
+});
+
+var _class$r, _temp$r;
+
+function _createSuper$B(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$C(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$C() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _createForOfIteratorHelper$3(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
+
+function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+var assert$5 = assert; //#region inner class
 //#region class of SlideSet
 
 var $slideAvalidID = Symbol("SlideSet.avalidID");
@@ -2707,7 +4354,7 @@ var SlideSet = /*#__PURE__*/function () {
   function SlideSet(_parent) {
     _classCallCheck(this, SlideSet);
 
-    assert$4(_parent instanceof PresentationPart, "_parent(an instance of PresentationPart)");
+    assert$5(_parent instanceof PresentationPart, "_parent(an instance of PresentationPart)");
     readonly(this, "selfElement", _parent.presentation.slideIdList);
     readonly(this, "parent", _parent);
     this.arrangeId();
@@ -2721,17 +4368,17 @@ var SlideSet = /*#__PURE__*/function () {
   _createClass(SlideSet, [{
     key: "arrangeId",
     value: function arrangeId() {
-      var totalNode = this.parent.contentDom.primaryNode;
+      var rootNode = this.parent.contentDom.documentElement;
       var id = SlideSet.MIN_ID;
 
-      var _iterator = _createForOfIteratorHelper(this.selfElement.items()),
+      var _iterator = _createForOfIteratorHelper$3(this.selfElement.items()),
           _step;
 
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var slideId = _step.value.slideId;
           var oriId = slideId.id;
-          var relElements = totalNode.xpathSelect(".//*[local-name(.)='sldId' and @id='".concat(oriId, "']"));
+          var relElements = rootNode.xpathSelect(".//*[local-name(.)='sldId' and @id='".concat(oriId, "']"));
 
           for (var relIdx in relElements) {
             relElements[relIdx].setAttribute("id", id);
@@ -2779,7 +4426,7 @@ var SlideSet = /*#__PURE__*/function () {
           switch (_context.prev = _context.next) {
             case 0:
               parent = this.parent;
-              _iterator2 = _createForOfIteratorHelper(this.selfElement.items());
+              _iterator2 = _createForOfIteratorHelper$3(this.selfElement.items());
               _context.prev = 2;
 
               _iterator2.s();
@@ -2847,7 +4494,7 @@ var SlideSet = /*#__PURE__*/function () {
                 }
 
                 parent = this.parent;
-                _iterator3 = _createForOfIteratorHelper(this.selfElement.items());
+                _iterator3 = _createForOfIteratorHelper$3(this.selfElement.items());
                 _context2.prev = 3;
 
                 _iterator3.s();
@@ -2937,9 +4584,9 @@ var SlideSet = /*#__PURE__*/function () {
                   useId = this[$slideAvalidID];
                 }
 
-                assert$4(useId <= SlideSet.MAX_ID, NO_ENOUGH_ID); // check the new slide must be in the same package of the slide set
+                assert$5(useId <= SlideSet.MAX_ID, NO_ENOUGH_ID); // check the new slide must be in the same package of the slide set
 
-                assert$4(!_targetSlide || parent.inSamePackage(_targetSlide), FROM_OTHER_PACKAGE("_targetSlide")); // looking for the relationship ID of the position slide
+                assert$5(!_targetSlide || parent.inSamePackage(_targetSlide), FROM_OTHER_PACKAGE("_targetSlide")); // looking for the relationship ID of the position slide
 
                 relSlideId = undefined;
 
@@ -2967,11 +4614,11 @@ var SlideSet = /*#__PURE__*/function () {
 
               case 11:
                 refSlidePart = _context3.sent;
-                fileExtName = path.extname(refSlidePart.path);
-                fileName = path.basename(refSlidePart.path, fileExtName).replace(/\d$/, "") + genRandId() + fileExtName;
-                filePath = path.dirname(refSlidePart.path);
+                fileExtName = path__default['default'].extname(refSlidePart.path);
+                fileName = path__default['default'].basename(refSlidePart.path, fileExtName).replace(/\d$/, "") + genRandId$1() + fileExtName;
+                filePath = path__default['default'].dirname(refSlidePart.path);
                 _context3.next = 17;
-                return refSlidePart.duplicate(path.join(filePath, fileName));
+                return refSlidePart.duplicate(path__default['default'].join(filePath, fileName));
 
               case 17:
                 _targetSlide = _context3.sent;
@@ -2982,11 +4629,11 @@ var SlideSet = /*#__PURE__*/function () {
                 throw NO_IMPLEMENT();
 
               case 21:
-                assert$4(_targetSlide, LOCATE_RESOURCE_FAIL("target slide part")); // insert the target slide
+                assert$5(_targetSlide, LOCATE_RESOURCE_FAIL("target slide part")); // insert the target slide
 
                 rid = parent.insertRelationPart(_targetSlide);
                 newId = this.selfElement.createElement(SlideId);
-                assert$4(newId, ACQUIRE_RESOURCE_FAIL("SlideId Node"));
+                assert$5(newId, ACQUIRE_RESOURCE_FAIL("SlideId Node"));
                 newId.id = useId;
                 newId.relationshipId = rid;
                 relSlideId ? relSlideId.insertAsSibling(newId, typeof _positionSlide === "number" && _positionSlide < 0) : this.selfElement.appendChild(newId);
@@ -3029,10 +4676,10 @@ _defineProperty(SlideSet, "MIN_ID", 256);
 
 _defineProperty(SlideSet, "MAX_ID", 0x0ffffffff);
 
-var PresentationPart = OpenXmlPart.register((_temp$e = _class$e = /*#__PURE__*/function (_OpenXmlPurePart) {
+var PresentationPart = OpenXmlPart.register((_temp$r = _class$r = /*#__PURE__*/function (_OpenXmlPurePart) {
   _inherits(PresentationPart, _OpenXmlPurePart);
 
-  var _super = _createSuper$m(PresentationPart);
+  var _super = _createSuper$B(PresentationPart);
 
   //#region override the shemas infomation and so on
   //#endregion
@@ -3053,22 +4700,22 @@ var PresentationPart = OpenXmlPart.register((_temp$e = _class$e = /*#__PURE__*/f
   }
 
   return PresentationPart;
-}(OpenXmlPurePart), _defineProperty(_class$e, "SchemasURI", "http://schemas.openxmlformats.org/presentationml/2006/main"), _defineProperty(_class$e, "ContentType", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"), _temp$e));
+}(OpenXmlPurePart), _defineProperty(_class$r, "SchemasURI", "http://schemas.openxmlformats.org/presentationml/2006/main"), _defineProperty(_class$r, "ContentType", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"), _temp$r));
 
-var _class$f, _temp$f;
+var _class$s, _temp$s;
 
-function _createSuper$n(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$o(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$C(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$D(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _isNativeReflectConstruct$o() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$D() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 /**
  * class of the slide part
  * @class SlidePart
  */
 
-var SlidePart = OpenXmlPart.register((_temp$f = _class$f = /*#__PURE__*/function (_OpenXmlPurePart) {
+var SlidePart = OpenXmlPart.register((_temp$s = _class$s = /*#__PURE__*/function (_OpenXmlPurePart) {
   _inherits(SlidePart, _OpenXmlPurePart);
 
-  var _super = _createSuper$n(SlidePart);
+  var _super = _createSuper$C(SlidePart);
 
   //#region override the key information
   //#endregion
@@ -3095,17 +4742,455 @@ var SlidePart = OpenXmlPart.register((_temp$f = _class$f = /*#__PURE__*/function
   }
 
   return SlidePart;
-}(OpenXmlPurePart), _defineProperty(_class$f, "SchemasURI", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"), _defineProperty(_class$f, "ContentType", "application/vnd.openxmlformats-officedocument.presentationml.slide+xml"), _temp$f));
+}(OpenXmlPurePart), _defineProperty(_class$s, "SchemasURI", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"), _defineProperty(_class$s, "ContentType", "application/vnd.openxmlformats-officedocument.presentationml.slide+xml"), _temp$s));
 
-var index$4 = /*#__PURE__*/Object.freeze({
+var index$6 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   PresentationPart: PresentationPart,
   SlidePart: SlidePart
 });
 
-var index$5 = /*#__PURE__*/Object.freeze({
+var _class$t, _temp$t;
+
+function _createSuper$D(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$E(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$E() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * Class of operating the document part
+ * @class DocumentPart
+ */
+
+var DocumentPart = OpenXmlPart.register((_temp$t = _class$t = /*#__PURE__*/function (_OpenXmlPurePart) {
+  _inherits(DocumentPart, _OpenXmlPurePart);
+
+  var _super = _createSuper$D(DocumentPart);
+
+  //#region override the shemas infomation and so on
+  //#endregion
+
+  /**
+   * constructor
+   * @param {*} _opt 
+   */
+  function DocumentPart(_opt) {
+    var _this;
+
+    _classCallCheck(this, DocumentPart);
+
+    _this = _super.call(this, _opt);
+    readonly(_assertThisInitialized(_this), "document", _this.primaryElement);
+    return _this;
+  }
+
+  return DocumentPart;
+}(OpenXmlPurePart), _defineProperty(_class$t, "SchemasURI", "http://schemas.openxmlformats.org/wordprocessingml/2006/main"), _defineProperty(_class$t, "ContentType", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"), _defineProperty(_class$t, "DefaultPath", "word/document.xml"), _temp$t));
+
+var index$7 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  presentation: index$4
+  DocumentPart: DocumentPart
+});
+
+var _class$u, _temp$u;
+
+function _createSuper$E(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$F(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$F() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+var assert$6 = assert;
+var EMPTY_SHARESTRING_DOC_XML = '<?xml version="1.0" encoding="UTF-8" standalone="true"?><sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"></sst>'; //#endregion
+
+/**
+ * Class of operating the share string part
+ * @class ShareStringPart
+ */
+
+var ShareStringPart = OpenXmlPart.register((_temp$u = _class$u = /*#__PURE__*/function (_OpenXmlPurePart) {
+  _inherits(ShareStringPart, _OpenXmlPurePart);
+
+  var _super = _createSuper$E(ShareStringPart);
+
+  _createClass(ShareStringPart, null, [{
+    key: "create",
+    //#region override the shemas infomation and so on
+    //#endregion
+
+    /**
+     * override for creating a new share string part
+     * @param {OpenXmlPackage} _package the package store the new part
+     * @param {String} _path the path of the share string part
+     * @return {Promise<ShareStringPart>} the new part
+     */
+    value: function create(_package, _path) {
+      assert$6(OpenXmlPackage$1.isPackage(_package), EXPECT_PARAM("_package must be an instance of OpenXmlPackage"));
+      assert$6(_path, EXPECT_PARAM("_path"));
+
+      _package.setFile(_path, EMPTY_SHARESTRING_DOC_XML, this.ContentFormat);
+
+      return this.load(_package, _path);
+    }
+    /**
+     * constructor
+     * @param {*} _opt 
+     */
+
+  }]);
+
+  function ShareStringPart(_opt) {
+    var _this;
+
+    _classCallCheck(this, ShareStringPart);
+
+    _this = _super.call(this, _opt);
+    readonly(_assertThisInitialized(_this), "table", _this.primaryElement);
+    return _this;
+  }
+
+  _createClass(ShareStringPart, [{
+    key: "add",
+    value: function add(_text) {
+      return this.table.add(_text);
+    }
+  }, {
+    key: "items",
+    get: function get() {
+      return this.table.items;
+    }
+  }]);
+
+  return ShareStringPart;
+}(OpenXmlPurePart), _defineProperty(_class$u, "SchemasURI", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"), _defineProperty(_class$u, "ContentType", "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"), _temp$u));
+
+var _class$v, _temp$v;
+
+function _createSuper$F(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$G(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$G() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * Class of operating the workbook part
+ * @class WorkbookPart
+ */
+
+var WorkbookPart = OpenXmlPart.register((_temp$v = _class$v = /*#__PURE__*/function (_OpenXmlPurePart) {
+  _inherits(WorkbookPart, _OpenXmlPurePart);
+
+  var _super = _createSuper$F(WorkbookPart);
+
+  //#region override the shemas infomation and so on
+  //#endregion
+
+  /**
+   * constructor
+   * @param {*} _opt 
+   */
+  function WorkbookPart(_opt) {
+    var _this;
+
+    _classCallCheck(this, WorkbookPart);
+
+    _this = _super.call(this, _opt);
+    readonly(_assertThisInitialized(_this), "data", _this.primaryElement);
+    return _this;
+  }
+  /**
+   * get the share string part;
+   */
+
+
+  _createClass(WorkbookPart, [{
+    key: "getShareStringPart",
+    value: function () {
+      var _getShareStringPart = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var part;
+        return regenerator.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.getRelationPart(ShareStringPart);
+
+              case 2:
+                part = _context.sent;
+
+                if (part) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _context.next = 6;
+                return ShareStringPart.create(this["package"], path__default['default'].join(path__default['default'].dirname(this.path), "sharedStrings.xml"));
+
+              case 6:
+                part = _context.sent;
+                part && this.insertRelationPart(part);
+
+              case 8:
+                return _context.abrupt("return", part);
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getShareStringPart() {
+        return _getShareStringPart.apply(this, arguments);
+      }
+
+      return getShareStringPart;
+    }()
+    /**
+     * get a share string in the given position
+     * @param {Number} _index the position of the string
+     * @return {ShareStringItem}
+     */
+
+  }, {
+    key: "getShareString",
+    value: function () {
+      var _getShareString = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2(_index) {
+        var part, list;
+        return regenerator.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.getShareStringPart();
+
+              case 2:
+                part = _context2.sent;
+                list = part && part.items;
+                return _context2.abrupt("return", list && list[_index]);
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getShareString(_x) {
+        return _getShareString.apply(this, arguments);
+      }
+
+      return getShareString;
+    }()
+    /**
+     * add a share string
+     * @param {String} _text the value of the string
+     */
+
+  }, {
+    key: "addShareString",
+    value: function () {
+      var _addShareString = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3(_text) {
+        var part;
+        return regenerator.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.getShareStringPart();
+
+              case 2:
+                part = _context3.sent;
+                return _context3.abrupt("return", part && part.add(_text));
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function addShareString(_x2) {
+        return _addShareString.apply(this, arguments);
+      }
+
+      return addShareString;
+    }()
+    /**
+     * get a sheet part by the index of the sheet
+     * @param {Number} _index the index of the sheet
+     * @return {SheetPart}
+     */
+
+  }, {
+    key: "getSheetByIndex",
+    value: function () {
+      var _getSheetByIndex = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4(_index) {
+        var id;
+        return regenerator.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                id = this.data.sheetList.getSheetId(Number(_index));
+                _context4.t0 = id;
+
+                if (!_context4.t0) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _context4.next = 5;
+                return this.getRelationPart(id.relationshipId);
+
+              case 5:
+                _context4.t0 = _context4.sent;
+
+              case 6:
+                return _context4.abrupt("return", _context4.t0);
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function getSheetByIndex(_x3) {
+        return _getSheetByIndex.apply(this, arguments);
+      }
+
+      return getSheetByIndex;
+    }()
+    /**
+     * get a sheet part by the name of the sheet
+     * @param {String} _name the name of the sheet
+     * @return {SheetPart}
+     */
+
+  }, {
+    key: "getSheetByName",
+    value: function () {
+      var _getSheetByName = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5(_name) {
+        var id;
+        return regenerator.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                id = this.data.sheetList.getSheetIdByName(_name);
+                _context5.t0 = id;
+
+                if (!_context5.t0) {
+                  _context5.next = 6;
+                  break;
+                }
+
+                _context5.next = 5;
+                return this.getRelationPart(id.relationshipId);
+
+              case 5:
+                _context5.t0 = _context5.sent;
+
+              case 6:
+                return _context5.abrupt("return", _context5.t0);
+
+              case 7:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function getSheetByName(_x4) {
+        return _getSheetByName.apply(this, arguments);
+      }
+
+      return getSheetByName;
+    }()
+  }]);
+
+  return WorkbookPart;
+}(OpenXmlPurePart), _defineProperty(_class$v, "SchemasURI", "http://schemas.openxmlformats.org/spreadsheetml/2006/main"), _defineProperty(_class$v, "ContentType", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"), _defineProperty(_class$v, "DefaultPath", "xl/workbook.xml"), _temp$v));
+
+var _class$w, _temp$w;
+
+function _createSuper$G(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$H(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct$H() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * Class of operating the sheet part
+ * @class SheetPart
+ */
+
+var SheetPart = OpenXmlPart.register((_temp$w = _class$w = /*#__PURE__*/function (_OpenXmlPurePart) {
+  _inherits(SheetPart, _OpenXmlPurePart);
+
+  var _super = _createSuper$G(SheetPart);
+
+  //#region override the shemas infomation and so on
+  //#endregion
+
+  /**
+   * constructor
+   * @param {*} _opt 
+   */
+  function SheetPart(_opt) {
+    var _this;
+
+    _classCallCheck(this, SheetPart);
+
+    _this = _super.call(this, _opt);
+    readonly(_assertThisInitialized(_this), "workSheet", _this.primaryElement);
+    return _this;
+  }
+  /**
+   * get the data of the sheet
+   */
+
+
+  _createClass(SheetPart, [{
+    key: "data",
+    get: function get() {
+      var data = this.workSheet.childOne(SheetData);
+
+      if (!data) {
+        data = this.workSheet.createElement(SheetData);
+        data && this.workSheet.appendChild(data);
+      }
+
+      return data;
+    }
+    /**
+     * get the informations of the column
+     */
+
+  }, {
+    key: "columnInformations",
+    get: function get() {
+      var cols = this.workSheet.childOne(ColumnInformationSet);
+
+      if (!cols) {
+        cols = this.workSheet.createElement(ColumnInformationSet);
+        cols && this.workSheet.appendChild(cols);
+      }
+
+      return cols;
+    }
+  }]);
+
+  return SheetPart;
+}(OpenXmlPurePart), _defineProperty(_class$w, "SchemasURI", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet"), _defineProperty(_class$w, "ContentType", "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"), _temp$w));
+
+var index$8 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  WorkbookPart: WorkbookPart,
+  SheetPart: SheetPart
+});
+
+var index$9 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  presentation: index$6,
+  wordprocessing: index$7,
+  spreadsheet: index$8
 });
 
 exports.IApplication = IApplication;
@@ -3114,13 +5199,13 @@ exports.IZip = IZip;
 exports.OpenXmlAttribute = OpenXmlAttribute;
 exports.OpenXmlBinaryPart = OpenXmlBinaryPart;
 exports.OpenXmlElement = OpenXmlElement;
-exports.OpenXmlPackage = OpenPackage;
+exports.OpenXmlPackage = OpenXmlPackage$1;
 exports.OpenXmlPart = OpenXmlPart;
 exports.OpenXmlPurePart = OpenXmlPurePart;
 exports.constants = constants;
-exports.elements = index$3;
 exports.error = error;
-exports.genRandId = genRandId;
-exports.parts = index$5;
+exports.genRandId = genRandId$1;
+exports.parts = index$9;
 exports.readonly = readonly;
+exports.schemas = index$5;
 //# sourceMappingURL=index.js.map

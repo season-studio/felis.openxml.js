@@ -34,7 +34,7 @@ export class OpenXmlPart {
      */
     static async load(_package, _path, _opt) {
         if (OpenPackage.isPackage(_package)) {
-            const path = String(_path).replace(/\\/ig, "/").replace(/^\//, "");
+            const path = String(_path || this.DefaultPath).replace(/\\/ig, "/").replace(/^\//, "");
             const relationshipPath = OpenXmlPart.getRelationshipPath(path);
             const content = await _package.getFile(path, this.ContentFormat);
             if (content) {
@@ -78,6 +78,17 @@ export class OpenXmlPart {
     }
 
     /**
+     * create a new part
+     * It should be override by the subclass if subclass needs this function
+     * @param {OpenXmlPackage} _package the package store the new part
+     * @param {String} _path the path in the package which the new part will save to
+     * @returns {OpenXmlPart} the instance of the new part
+     */
+    static async create(_package, _path) {
+        error.NoImplemented(`${this.name}.create`);
+    }
+
+    /**
      * string of the content's type, may be override by the subclass
      */
     static ContentType = undefined;
@@ -91,6 +102,11 @@ export class OpenXmlPart {
      * format of the part's content, may be override by the subclass
      */
     static ContentFormat = "text";
+
+    /**
+     * the default path of the kind of part, mat be override by the subclass
+     */
+    static DefaultPath = "";
 
     /**
      * register a subclass part
@@ -213,7 +229,7 @@ export class OpenXmlPart {
         relNode.setAttribute("Target", targetRelPath);
         relNode.setAttribute("Type", _part.constructor.SchemasURI);
         relNode.setAttribute("Id", rid);
-        rels.primaryNode.appendChild(relNode);
+        rels.documentElement.appendChild(relNode);
 
         return rid;
     }

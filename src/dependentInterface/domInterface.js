@@ -3,8 +3,8 @@ import {error} from "../common";
 export class IDom {
     constructor () {}
 
-    get primaryNode() {
-        error.NoImplemented("IDom.primaryNode");
+    get documentElement() {
+        error.NoImplemented("IDom.documentElement");
     }
 
     xpathSelect(_expression, _isSingle) {

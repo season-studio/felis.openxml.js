@@ -1,6 +1,6 @@
 import { readonly, error } from "../../../common";
 import { OpenXmlElement, OpenXmlPart, OpenXmlPurePart } from "../../basic";
-import { presentation, office, drawing }  from "../../elements";
+import { presentation, office, drawing }  from "../../schemas";
 
 /**
  * class of the slide part

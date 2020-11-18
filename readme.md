@@ -25,3 +25,7 @@ The second way is launch program in command line:
 - make sure this SDK is packed in ".\\.dist",
 - run "npm i" in shell to download the dependency modules,
 - run the command "node .\debug\nodejs\<xxx.js>" in shell. (<xxx.js> is a javascript file under the fold named "debug\nodejs")
+
+# Notice
+
+- If DOM of XML is implemented by xmldom, the namespace propegation may be incorrect on serialization([xml issus 247](https://github.com/jindw/xmldom/issues/247)). It has not been fixed. So you should fix it yourself.

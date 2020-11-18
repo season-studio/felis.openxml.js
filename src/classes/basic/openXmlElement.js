@@ -16,11 +16,19 @@ const registedElements = {};
  */
 export class OpenXmlElement {
 
-    constructor (_node) {
+    constructor (_node, _options) {
         assert(_node, error.EXPECT_PARAM("_node"));
         readonly(this, {
             node: _node
         });
+
+        if (_options) {
+            const children = _options.children || [];
+            for (let item of children) {
+                assert(item instanceof OpenXmlElement, error.EXPECT_PARAM("item in options.children must be instance of OpenXmlElement"));
+                _node.appendChild(item.node);
+            }
+        }
     }
 
     //#region members should be override by subclass
@@ -103,24 +111,26 @@ export class OpenXmlElement {
      * create a new element of the invoker class
      * @param {IDOM|Document} _dom the isntance of the IDOM for creating element
      * @param {Element} _parentElement the parent element which will contain the new element
+     * @param {*} _options the options for the creation action
      */
-    static createElement(_dom, _parentElement) {
+    static createElement(_dom, _parentElement, _options) {
         assert(_dom, error.EXPECT_PARAM("_dom"));
 
         const node = _dom.createElementNS(this.NamespaceUri, this.qualifiedName(_parentElement));
         if (node) {
-            let element = new this(node);
-            this.createDetail(element);
+            let element = new this(node, _options);
+            this.createDetail(element, _options);
             return element;
         }
     }
 
     /**
      * the action for preparing the detail data of a new instance
-     * @param {OpenXmlElement} _element 
+     * @param {OpenXmlElement} _element the target element
+     * @param {*} _options the options for the creation action
      */
-    static createDetail(_element) {
-        assert(_element instanceof this, error.EXPECT_PARAM(`_element must be instance of ${this.name}`));
+    static createDetail(_element, _options) {
+        // assert(_element instanceof this, error.EXPECT_PARAM(`_element must be instance of ${this.name}`));
     }
 
     /**
@@ -174,6 +184,13 @@ export class OpenXmlElement {
     }
 
     /**
+     * set the text content of this instance
+     */
+    set textContent(_val) {
+        this.node.textContent = _val
+    }
+
+    /**
      * get the class name of this instance
      */
     get className() {
@@ -222,7 +239,7 @@ export class OpenXmlElement {
      * @param {OpemXmlAttribute|Class|String|undefined} _arg the xpath part, can be insatnce of attribute, class, string.
      *                                                       function will match any descendant by default if ignore this parameter.
      */
-    descendantOne(_class, _exSelector) {
+    descendantOne(_arg) {
         const selectExp = this.constructor.genXPath(".//", _arg);
         const node = this.node.xpathSelect(selectExp, true);
         return node && (OpenXmlElement.instanced((1 !== node.nodeType) ? node.ownerElement : node) || node);
@@ -236,6 +253,20 @@ export class OpenXmlElement {
         assert(_element instanceof OpenXmlElement, error.EXPECT_PARAM("_element"));
 
         this.node.appendChild(_element.node);
+    }
+
+    /**
+     * insert a element as a child of this element in a special postion
+     * @param {OpenXmlElement} _element the element will be inserted
+     * @param {Number} _position the index of the element will be inserted in, ignore this parameter will insert the element at the end of this element.
+     */
+    insertChild(_element, _position) {
+        assert(_element instanceof OpenXmlElement, error.EXPECT_PARAM("_element"));
+
+        const nodeList = this.node.childNodes;
+        this.node.insertBefore(_element.node, 
+                                (nodeList && (typeof _position === "number") && (_position >= 0) && (_position < nodeList.length)) 
+                                    ? nodeList[_position] : null);
     }
 
     /**
@@ -254,18 +285,19 @@ export class OpenXmlElement {
     /**
      * create a new element of the given class
      * @param {Class} _elementClass the class of the new element
+     * @param {*} _options the options for the creation action
      */
-    createElement(_elementClass) {
+    createElement(_elementClass, _options) {
         assert(OpenXmlElement.isPrototypeOf(_elementClass), error.EXPECT_PARAM("_elementClass"));
 
-        return _elementClass.createElement(this.node.ownerDocument, this);
+        return _elementClass.createElement(this.node.ownerDocument, this, _options);
     }
 
     /**
      * remove the current from the DOM
      */
     remove() {
-        const parent = this.node.parent;
+        const parent = this.node.parentNode;
 
         parent && parent.removeChild(this.node);
     }
