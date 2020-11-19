@@ -16,17 +16,17 @@ At this time, this SDK is not up to release standards yet. The desig and coding 
 
 There are three way to run the DEMO.
 
-The first way is launch program in debug mode in vscode:
+The first way is launching program in debug mode in vscode:
 - run "npm i" in shell to download the dependency modules,
 - open this workspace in vscode,
 - press F5 to launch the program
 
-The second way is launch program in command line:
+The second way is launching program in command line:
 - make sure this SDK is packed in ".\\.dist",
 - run "npm i" in shell to download the dependency modules,
 - run the command "node .\debug\nodejs\<xxx.js>" in shell. (<xxx.js> is a javascript file under the fold named "debug\nodejs")
 
-The third way is test the DEMO in browser:
+The third way is testing the DEMO in browser:
 - open the ".\\debug\\web\\html\\index.html" in browser
 - use the file in ".\\debug\\nodejs\\template" to test
 

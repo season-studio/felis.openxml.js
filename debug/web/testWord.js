@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const { OpenXmlAttribute, OpenXmlElement, OpenXmlPackage, OpenXmlPurePart, parts, schemas } = require("../../.dist");
 
 const { Application } = require("./application/application");
